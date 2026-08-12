@@ -57,7 +57,7 @@ resource "azurerm_virtual_machine" "frontend_vm_check" {
   location              = "Central India"
   resource_group_name   = "np-prod-rg"
   network_interface_ids = [azurerm_network_interface.frontend_nic.id]
-  vm_size               = "Standard_B2s"
+  vm_size               = "Standard_B2ms"
 
   storage_os_disk {
     name              = "frontend-vm-osdisk"
