@@ -52,7 +52,7 @@ resource "azurerm_network_interface" "frontend_nic" {
 }
 
 
-resource "azurerm_virtual_machine" "frontend_vm" {
+resource "azurerm_virtual_machine" "frontend_vm_check" {
   name                  = "frontend-vm"
   location              = "Central India"
   resource_group_name   = "np-prod-rg"
