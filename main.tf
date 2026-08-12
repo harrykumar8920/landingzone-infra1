@@ -16,7 +16,16 @@ resource "azurerm_resource_group" "rg2" {
     managed_by  = "terraform"
   }
 }
+ 
+ resource "azurerm_resource_group" "rg3" {
+  name     = "np-preprod-rg3"
+  location = "Central India"
 
+  tags = {
+    environment = "preprod"
+    managed_by  = "terraform"
+  }
+}
 
 resource "azurerm_virtual_network" "vnet" {
   name                = "apni-vnet"
