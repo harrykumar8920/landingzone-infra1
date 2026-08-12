@@ -16,7 +16,16 @@ resource "azurerm_resource_group" "rg2" {
     managed_by  = "terraform"
   }
 }
+ 
+ resource "azurerm_resource_group" "rg3" {
+  name     = "np-preprod-rg3"
+  location = "Central India"
 
+  tags = {
+    environment = "preprod"
+    managed_by  = "terraform"
+  }
+}
 
 resource "azurerm_virtual_network" "vnet" {
   name                = "apni-vnet"
@@ -57,7 +66,7 @@ resource "azurerm_virtual_machine" "frontend_vm_check" {
   location              = "Central India"
   resource_group_name   = "np-prod-rg"
   network_interface_ids = [azurerm_network_interface.frontend_nic.id]
-  vm_size               = "Standard_B2s"
+  vm_size               = "Standard_B2ms"
 
   storage_os_disk {
     name              = "frontend-vm-osdisk"
