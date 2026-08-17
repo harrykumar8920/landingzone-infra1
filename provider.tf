@@ -8,8 +8,8 @@ terraform {
     }
   }
   backend "azurerm" {
-    resource_group_name = "b18g35-common-rg"
-    storage_account_name = "b18g35storageaccount"
+    resource_group_name = "b18g35-hk-rg"
+    storage_account_name = "b18g35storageaccount2"
     container_name = "tfstatefiles"
     key                  = "landingzone-hk.tfstate"
   }
