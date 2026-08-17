@@ -32,6 +32,9 @@ resource "azurerm_virtual_network" "vnet" {
   location            = "Central India"
   resource_group_name = "np-prod-rg"
   address_space       = ["10.0.0.0/16"]
+    depends_on = [
+    azurerm_resource_group.rg   
+  ]
 }
 
 resource "azurerm_subnet" "snet1" {
@@ -46,12 +49,16 @@ resource "azurerm_subnet" "snet2" {
   resource_group_name  = "np-prod-rg"
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = ["10.0.2.0/24"]
+
 }
 
 resource "azurerm_network_interface" "frontend_nic" {
+    depends_on = [
+    azurerm_resource_group.rg 
+  ]
   name                = "frontend-vm-nic"
-  location            = "Central India"
-  resource_group_name = "np-prod-rg"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
 
   ip_configuration {
     name                          = "internal"
@@ -63,8 +70,8 @@ resource "azurerm_network_interface" "frontend_nic" {
 
 resource "azurerm_virtual_machine" "frontend_vm_check" {
   name                  = "frontend-vm"
-  location              = "Central India"
-  resource_group_name   = "np-prod-rg"
+  location              = azurerm_resource_group.rg.location
+  resource_group_name   = azurerm_resource_group.rg.name
   network_interface_ids = [azurerm_network_interface.frontend_nic.id]
   vm_size               = "Standard_B2ms"
 
