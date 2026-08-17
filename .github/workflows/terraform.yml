@@ -40,10 +40,10 @@ jobs:
         with:
           creds: |
             {
-              "clientId": "d8ced92b-b8e9-46f3-93b1-6fb7f004a13d",
-              "clientSecret": "s638Q~eG70pJgTGb_b2gDlKxly-Ruzfp8Ux_.dpZ",
-              "subscriptionId": "09313c5c-930a-453c-a90c-32ef23577e6b",
-              "tenantId": "18d71235-29d4-4066-8c1c-633f3467b508"
+              "clientId": "017c5f98-f171-442e-9019-9bd027d8b4b1",
+              "clientSecret": "5Wd8Q~Qhv.uPTTfnkEbPaPl5I_O2UI_v1OHX4dse",
+              "subscriptionId": "83d4cba0-c6b0-4b71-8050-0b7fd5ba5202",
+              "tenantId": "f1443a2a-8429-4f97-8a40-b3021908fc59"
             }
 
       # --------------------------------------------------------
@@ -51,20 +51,20 @@ jobs:
       # --------------------------------------------------------
       - name: "Terraform Init"
         env:
-          ARM_CLIENT_ID: "d8ced92b-b8e9-46f3-93b1-6fb7f004a13d"
-          ARM_CLIENT_SECRET: "s638Q~eG70pJgTGb_b2gDlKxly-Ruzfp8Ux_.dpZ"
-          ARM_SUBSCRIPTION_ID: "09313c5c-930a-453c-a90c-32ef23577e6b"
-          ARM_TENANT_ID: "18d71235-29d4-4066-8c1c-633f3467b508"
+          ARM_CLIENT_ID: "017c5f98-f171-442e-9019-9bd027d8b4b1"
+          ARM_CLIENT_SECRET: "5Wd8Q~Qhv.uPTTfnkEbPaPl5I_O2UI_v1OHX4dse"
+          ARM_SUBSCRIPTION_ID: "83d4cba0-c6b0-4b71-8050-0b7fd5ba5202"
+          ARM_TENANT_ID: "f1443a2a-8429-4f97-8a40-b3021908fc59"
           ARM_USE_CLI: "false"
           ARM_USE_AZUREAD: "true"
         run: terraform init -reconfigure
 
       - name: "Terraform Validate"
         env:
-          ARM_CLIENT_ID: "d8ced92b-b8e9-46f3-93b1-6fb7f004a13d"
-          ARM_CLIENT_SECRET: "s638Q~eG70pJgTGb_b2gDlKxly-Ruzfp8Ux_.dpZ"
-          ARM_SUBSCRIPTION_ID: "09313c5c-930a-453c-a90c-32ef23577e6b"
-          ARM_TENANT_ID: "18d71235-29d4-4066-8c1c-633f3467b508"
+          ARM_CLIENT_ID: "017c5f98-f171-442e-9019-9bd027d8b4b1"
+          ARM_CLIENT_SECRET: "5Wd8Q~Qhv.uPTTfnkEbPaPl5I_O2UI_v1OHX4dse"
+          ARM_SUBSCRIPTION_ID: "83d4cba0-c6b0-4b71-8050-0b7fd5ba5202"
+          ARM_TENANT_ID: "f1443a2a-8429-4f97-8a40-b3021908fc59"
           ARM_USE_CLI: "false"
           ARM_USE_AZUREAD: "true"
         run: terraform validate
@@ -72,10 +72,10 @@ jobs:
       - name: "Terraform Plan"
         id: plan
         env:
-          ARM_CLIENT_ID: "d8ced92b-b8e9-46f3-93b1-6fb7f004a13d"
-          ARM_CLIENT_SECRET: "s638Q~eG70pJgTGb_b2gDlKxly-Ruzfp8Ux_.dpZ"
-          ARM_SUBSCRIPTION_ID: "09313c5c-930a-453c-a90c-32ef23577e6b"
-          ARM_TENANT_ID: "18d71235-29d4-4066-8c1c-633f3467b508"
+          ARM_CLIENT_ID: "017c5f98-f171-442e-9019-9bd027d8b4b1"
+          ARM_CLIENT_SECRET: "5Wd8Q~Qhv.uPTTfnkEbPaPl5I_O2UI_v1OHX4dse"
+          ARM_SUBSCRIPTION_ID: "83d4cba0-c6b0-4b71-8050-0b7fd5ba5202"
+          ARM_TENANT_ID: "f1443a2a-8429-4f97-8a40-b3021908fc59"
           ARM_USE_CLI: "false"
           ARM_USE_AZUREAD: "true"
         run: terraform plan -no-color -out=tfplan
@@ -145,10 +145,10 @@ jobs:
         with:
           creds: |
             {
-              "clientId": "d8ced92b-b8e9-46f3-93b1-6fb7f004a13d",
-              "clientSecret": "s638Q~eG70pJgTGb_b2gDlKxly-Ruzfp8Ux_.dpZ",
-              "subscriptionId": "09313c5c-930a-453c-a90c-32ef23577e6b",
-              "tenantId": "18d71235-29d4-4066-8c1c-633f3467b508"
+              "clientId": "017c5f98-f171-442e-9019-9bd027d8b4b1",
+              "clientSecret": "5Wd8Q~Qhv.uPTTfnkEbPaPl5I_O2UI_v1OHX4dse",
+              "subscriptionId": "83d4cba0-c6b0-4b71-8050-0b7fd5ba5202",
+              "tenantId": "f1443a2a-8429-4f97-8a40-b3021908fc59"
             }
 
       # --------------------------------------------------------
@@ -156,10 +156,10 @@ jobs:
       # --------------------------------------------------------
       - name: "Terraform Init"
         env:
-          ARM_CLIENT_ID: "d8ced92b-b8e9-46f3-93b1-6fb7f004a13d"
-          ARM_CLIENT_SECRET: "s638Q~eG70pJgTGb_b2gDlKxly-Ruzfp8Ux_.dpZ"
-          ARM_SUBSCRIPTION_ID: "09313c5c-930a-453c-a90c-32ef23577e6b"
-          ARM_TENANT_ID: "18d71235-29d4-4066-8c1c-633f3467b508"
+          ARM_CLIENT_ID: "017c5f98-f171-442e-9019-9bd027d8b4b1"
+          ARM_CLIENT_SECRET: "5Wd8Q~Qhv.uPTTfnkEbPaPl5I_O2UI_v1OHX4dse"
+          ARM_SUBSCRIPTION_ID: "83d4cba0-c6b0-4b71-8050-0b7fd5ba5202"
+          ARM_TENANT_ID: "f1443a2a-8429-4f97-8a40-b3021908fc59"
           ARM_USE_CLI: "false"
           ARM_USE_AZUREAD: "true"
         run: terraform init -reconfigure
@@ -170,10 +170,10 @@ jobs:
       - name: "Terraform Plan for Apply"
         id: plan
         env:
-          ARM_CLIENT_ID: "d8ced92b-b8e9-46f3-93b1-6fb7f004a13d"
-          ARM_CLIENT_SECRET: "s638Q~eG70pJgTGb_b2gDlKxly-Ruzfp8Ux_.dpZ"
-          ARM_SUBSCRIPTION_ID: "09313c5c-930a-453c-a90c-32ef23577e6b"
-          ARM_TENANT_ID: "18d71235-29d4-4066-8c1c-633f3467b508"
+          ARM_CLIENT_ID: "017c5f98-f171-442e-9019-9bd027d8b4b1"
+          ARM_CLIENT_SECRET: "5Wd8Q~Qhv.uPTTfnkEbPaPl5I_O2UI_v1OHX4dse"
+          ARM_SUBSCRIPTION_ID: "83d4cba0-c6b0-4b71-8050-0b7fd5ba5202"
+          ARM_TENANT_ID: "f1443a2a-8429-4f97-8a40-b3021908fc59"
           ARM_USE_CLI: "false"
           ARM_USE_AZUREAD: "true"
         run: terraform plan -out=tfplan
@@ -183,10 +183,10 @@ jobs:
       # --------------------------------------------------------
       - name: "Terraform Apply"
         env:
-          ARM_CLIENT_ID: "d8ced92b-b8e9-46f3-93b1-6fb7f004a13d"
-          ARM_CLIENT_SECRET: "s638Q~eG70pJgTGb_b2gDlKxly-Ruzfp8Ux_.dpZ"
-          ARM_SUBSCRIPTION_ID: "09313c5c-930a-453c-a90c-32ef23577e6b"
-          ARM_TENANT_ID: "18d71235-29d4-4066-8c1c-633f3467b508"
+          ARM_CLIENT_ID: "017c5f98-f171-442e-9019-9bd027d8b4b1"
+          ARM_CLIENT_SECRET: "5Wd8Q~Qhv.uPTTfnkEbPaPl5I_O2UI_v1OHX4dse"
+          ARM_SUBSCRIPTION_ID: "83d4cba0-c6b0-4b71-8050-0b7fd5ba5202"
+          ARM_TENANT_ID: "f1443a2a-8429-4f97-8a40-b3021908fc59"
           ARM_USE_CLI: "false"
           ARM_USE_AZUREAD: "true"
         run: terraform apply -auto-approve tfplan
@@ -197,10 +197,10 @@ jobs:
       - name: "Get Outputs"
         id: outputs
         env:
-          ARM_CLIENT_ID: "d8ced92b-b8e9-46f3-93b1-6fb7f004a13d"
-          ARM_CLIENT_SECRET: "s638Q~eG70pJgTGb_b2gDlKxly-Ruzfp8Ux_.dpZ"
-          ARM_SUBSCRIPTION_ID: "09313c5c-930a-453c-a90c-32ef23577e6b"
-          ARM_TENANT_ID: "18d71235-29d4-4066-8c1c-633f3467b508"
+          ARM_CLIENT_ID: "017c5f98-f171-442e-9019-9bd027d8b4b1"
+          ARM_CLIENT_SECRET: "5Wd8Q~Qhv.uPTTfnkEbPaPl5I_O2UI_v1OHX4dse"
+          ARM_SUBSCRIPTION_ID: "83d4cba0-c6b0-4b71-8050-0b7fd5ba5202"
+          ARM_TENANT_ID: "f1443a2a-8429-4f97-8a40-b3021908fc59"
           ARM_USE_CLI: "false"
           ARM_USE_AZUREAD: "true"
         run: |
