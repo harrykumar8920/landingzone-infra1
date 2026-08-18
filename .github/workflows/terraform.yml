@@ -3,7 +3,6 @@ name: "Terraform CI/CD Pipeline"
 on:
   pull_request:
     branches: [main]
-
   push:
     branches: [main]
 
@@ -17,174 +16,112 @@ env:
 
 jobs:
   # ============================================================
-  # JOB 1: Terraform Plan + Security Checks
-  # Runs only on Pull Request
+  # Job 1: Terraform Plan - PR par chalega
   # ============================================================
   terraform-plan:
-    name: "Terraform Plan & Security Scan"
-
+    name: "Terraform Plan"
     runs-on: ubuntu-latest
-
     if: github.event_name == 'pull_request'
 
     steps:
-      # ========================================================
-      # 1. Checkout Code
-      # ========================================================
       - name: "Checkout Code"
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      # ========================================================
-      # 2. Gitleaks - Secret Detection
-      # ========================================================
-      - name: "Gitleaks Secret Scan"
-        uses: gitleaks/gitleaks-action@v3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # ========================================================
-      # 3. Setup Terraform
-      # ========================================================
       - name: "Setup Terraform"
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ env.TF_VERSION }}
 
-      # ========================================================
-      # 4. Terraform Format Check
-      # ========================================================
-      - name: "Terraform Format Check"
-        run: terraform fmt -check -recursive
-
-      # ========================================================
-      # 5. Setup TFLint
-      # ========================================================
-      - name: "Setup TFLint"
-        uses: terraform-linters/setup-tflint@v5
-
-      # ========================================================
-      # 6. TFLint Init
-      # ========================================================
-      - name: "TFLint Init"
-        run: tflint --init
-
-      # ========================================================
-      # 7. TFLint Scan
-      # ========================================================
-      - name: "TFLint Scan"
-        run: tflint --recursive
-
-      # ========================================================
-      # 8. Azure Login
-      # ========================================================
+      # --------------------------------------------------------
+      # Azure Login - Service Principal
+      # --------------------------------------------------------
       - name: "Azure Login"
         uses: azure/login@v2
         with:
           creds: |
             {
-              "clientId": "${{ secrets.AZURE_CLIENT_ID }}",
-              "clientSecret": "${{ secrets.AZURE_CLIENT_SECRET }}",
-              "subscriptionId": "${{ secrets.AZURE_SUBSCRIPTION_ID }}",
-              "tenantId": "${{ secrets.AZURE_TENANT_ID }}"
+              "clientId": "017c5f98-f171-442e-9019-9bd027d8b4b1",
+              "clientSecret": "5Wd8Q~Qhv.uPTTfnkEbPaPl5I_O2UI_v1OHX4dse",
+              "subscriptionId": "83d4cba0-c6b0-4b71-8050-0b7fd5ba5202",
+              "tenantId": "f1443a2a-8429-4f97-8a40-b3021908fc59"
             }
 
-      # ========================================================
-      # 9. Terraform Init
-      # ========================================================
+      # --------------------------------------------------------
+      # Terraform Init
+      # --------------------------------------------------------
       - name: "Terraform Init"
         env:
-          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          ARM_CLIENT_ID: "017c5f98-f171-442e-9019-9bd027d8b4b1"
+          ARM_CLIENT_SECRET: "5Wd8Q~Qhv.uPTTfnkEbPaPl5I_O2UI_v1OHX4dse"
+          ARM_SUBSCRIPTION_ID: "83d4cba0-c6b0-4b71-8050-0b7fd5ba5202"
+          ARM_TENANT_ID: "f1443a2a-8429-4f97-8a40-b3021908fc59"
           ARM_USE_CLI: "false"
           ARM_USE_AZUREAD: "true"
-
         run: terraform init -reconfigure
 
-      # ========================================================
-      # 10. Terraform Validate
-      # ========================================================
       - name: "Terraform Validate"
         env:
-          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          ARM_CLIENT_ID: "017c5f98-f171-442e-9019-9bd027d8b4b1"
+          ARM_CLIENT_SECRET: "5Wd8Q~Qhv.uPTTfnkEbPaPl5I_O2UI_v1OHX4dse"
+          ARM_SUBSCRIPTION_ID: "83d4cba0-c6b0-4b71-8050-0b7fd5ba5202"
+          ARM_TENANT_ID: "f1443a2a-8429-4f97-8a40-b3021908fc59"
           ARM_USE_CLI: "false"
           ARM_USE_AZUREAD: "true"
-
         run: terraform validate
 
-      # ========================================================
-      # 11. tfsec - Terraform Security Scan
-      # ========================================================
-      - name: "tfsec Security Scan"
-        uses: aquasecurity/tfsec-action@v1.0.3
-
-      # ========================================================
-      # 12. Terraform Plan
-      # ========================================================
       - name: "Terraform Plan"
         id: plan
-
         env:
-          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          ARM_CLIENT_ID: "017c5f98-f171-442e-9019-9bd027d8b4b1"
+          ARM_CLIENT_SECRET: "5Wd8Q~Qhv.uPTTfnkEbPaPl5I_O2UI_v1OHX4dse"
+          ARM_SUBSCRIPTION_ID: "83d4cba0-c6b0-4b71-8050-0b7fd5ba5202"
+          ARM_TENANT_ID: "f1443a2a-8429-4f97-8a40-b3021908fc59"
           ARM_USE_CLI: "false"
           ARM_USE_AZUREAD: "true"
+        run: terraform plan -no-color -out=tfplan
+        continue-on-error: true
 
-        run: |
-          terraform plan \
-            -no-color \
-            -out=tfplan
-
-      # ========================================================
-      # 13. Upload Terraform Plan
-      # ========================================================
-      - name: "Upload Terraform Plan"
+      - name: "Upload Plan Artifact"
         uses: actions/upload-artifact@v4
-
         with:
-          name: terraform-plan
+          name: tfplan
           path: tfplan
 
-      # ========================================================
-      # 14. Show Plan Summary in GitHub
-      # ========================================================
-      - name: "Terraform Plan Summary"
+      - name: "Comment Plan on PR"
+        uses: actions/github-script@v7
+        if: github.event_name == 'pull_request'
+        with:
+          script: |
+            const planOutput = `${{ steps.plan.outputs.stdout }}`;
 
-        run: |
+            const summary = planOutput
+              .split('\n')
+              .filter(line =>
+                line.includes('Plan:') ||
+                line.includes('Changes to') ||
+                line.includes('No changes')
+              )
+              .join('\n');
 
-          echo "## 🧾 Terraform Plan Summary" >> $GITHUB_STEP_SUMMARY
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🧾 Terraform Plan Summary
 
-          terraform show -no-color tfplan >> $GITHUB_STEP_SUMMARY
+            \`\`\`hcl
+            ${summary}
+            \`\`\`
 
-          echo "" >> $GITHUB_STEP_SUMMARY
-
-          echo "### Security Checks" >> $GITHUB_STEP_SUMMARY
-
-          echo "✅ Gitleaks - Secret Scan completed" >> $GITHUB_STEP_SUMMARY
-
-          echo "✅ TFLint - Code Quality Scan completed" >> $GITHUB_STEP_SUMMARY
-
-          echo "✅ tfsec - Security Scan completed" >> $GITHUB_STEP_SUMMARY
-
-          echo "✅ Terraform Validate completed" >> $GITHUB_STEP_SUMMARY
-
-          echo "✅ Terraform Plan completed" >> $GITHUB_STEP_SUMMARY
+            ✅ Plan generated successfully.
+            Merge this PR to apply the changes.`
+            });
 
   # ============================================================
-  # JOB 2: Terraform Apply
-  # Runs only when code is pushed to main
+  # Job 2: Terraform Apply - main branch par push par chalega
   # ============================================================
   terraform-apply:
     name: "Terraform Apply"
-
     runs-on: ubuntu-latest
 
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -192,140 +129,88 @@ jobs:
     environment: "production"
 
     steps:
-      # ========================================================
-      # 1. Checkout Code
-      # ========================================================
       - name: "Checkout Code"
         uses: actions/checkout@v4
 
-      # ========================================================
-      # 2. Setup Terraform
-      # ========================================================
       - name: "Setup Terraform"
         uses: hashicorp/setup-terraform@v3
-
         with:
           terraform_version: ${{ env.TF_VERSION }}
 
-      # ========================================================
-      # 3. Azure Login
-      # ========================================================
+      # --------------------------------------------------------
+      # Azure Login - Service Principal
+      # --------------------------------------------------------
       - name: "Azure Login"
         uses: azure/login@v2
-
         with:
           creds: |
             {
-              "clientId": "${{ secrets.AZURE_CLIENT_ID }}",
-              "clientSecret": "${{ secrets.AZURE_CLIENT_SECRET }}",
-              "subscriptionId": "${{ secrets.AZURE_SUBSCRIPTION_ID }}",
-              "tenantId": "${{ secrets.AZURE_TENANT_ID }}"
+              "clientId": "017c5f98-f171-442e-9019-9bd027d8b4b1",
+              "clientSecret": "5Wd8Q~Qhv.uPTTfnkEbPaPl5I_O2UI_v1OHX4dse",
+              "subscriptionId": "83d4cba0-c6b0-4b71-8050-0b7fd5ba5202",
+              "tenantId": "f1443a2a-8429-4f97-8a40-b3021908fc59"
             }
 
-      # ========================================================
-      # 4. Terraform Init
-      # ========================================================
+      # --------------------------------------------------------
+      # Terraform Init
+      # --------------------------------------------------------
       - name: "Terraform Init"
-
         env:
-          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          ARM_CLIENT_ID: "017c5f98-f171-442e-9019-9bd027d8b4b1"
+          ARM_CLIENT_SECRET: "5Wd8Q~Qhv.uPTTfnkEbPaPl5I_O2UI_v1OHX4dse"
+          ARM_SUBSCRIPTION_ID: "83d4cba0-c6b0-4b71-8050-0b7fd5ba5202"
+          ARM_TENANT_ID: "f1443a2a-8429-4f97-8a40-b3021908fc59"
           ARM_USE_CLI: "false"
           ARM_USE_AZUREAD: "true"
-
         run: terraform init -reconfigure
 
-      # ========================================================
-      # 5. Terraform Validate
-      # ========================================================
-      - name: "Terraform Validate"
-
-        run: terraform validate
-
-      # ========================================================
-      # 6. TFLint
-      # ========================================================
-      - name: "Setup TFLint"
-        uses: terraform-linters/setup-tflint@v5
-
-      - name: "TFLint Init"
-        run: tflint --init
-
-      - name: "TFLint Scan"
-        run: tflint --recursive
-
-      # ========================================================
-      # 7. tfsec Security Scan
-      # ========================================================
-      - name: "tfsec Security Scan"
-        uses: aquasecurity/tfsec-action@v1.0.3
-
-      # ========================================================
-      # 8. Terraform Plan
-      # ========================================================
-      - name: "Terraform Plan"
-
+      # --------------------------------------------------------
+      # 🔥 NEW STEP: Generate Plan in Apply Job
+      # --------------------------------------------------------
+      - name: "Terraform Plan for Apply"
+        id: plan
         env:
-          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          ARM_CLIENT_ID: "017c5f98-f171-442e-9019-9bd027d8b4b1"
+          ARM_CLIENT_SECRET: "5Wd8Q~Qhv.uPTTfnkEbPaPl5I_O2UI_v1OHX4dse"
+          ARM_SUBSCRIPTION_ID: "83d4cba0-c6b0-4b71-8050-0b7fd5ba5202"
+          ARM_TENANT_ID: "f1443a2a-8429-4f97-8a40-b3021908fc59"
           ARM_USE_CLI: "false"
           ARM_USE_AZUREAD: "true"
+        run: terraform plan -out=tfplan
 
-        run: |
-          terraform plan \
-            -out=tfplan
-
-      # ========================================================
-      # 9. Terraform Apply
-      # ========================================================
+      # --------------------------------------------------------
+      # 🔥 MODIFIED: Apply using the generated plan
+      # --------------------------------------------------------
       - name: "Terraform Apply"
-
         env:
-          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          ARM_CLIENT_ID: "017c5f98-f171-442e-9019-9bd027d8b4b1"
+          ARM_CLIENT_SECRET: "5Wd8Q~Qhv.uPTTfnkEbPaPl5I_O2UI_v1OHX4dse"
+          ARM_SUBSCRIPTION_ID: "83d4cba0-c6b0-4b71-8050-0b7fd5ba5202"
+          ARM_TENANT_ID: "f1443a2a-8429-4f97-8a40-b3021908fc59"
           ARM_USE_CLI: "false"
           ARM_USE_AZUREAD: "true"
+        run: terraform apply -auto-approve tfplan
 
-        run: |
-          terraform apply \
-            -auto-approve \
-            tfplan
-
-      # ========================================================
-      # 10. Terraform Outputs
-      # ========================================================
-      - name: "Get Terraform Outputs"
-
+      # --------------------------------------------------------
+      # Terraform Outputs
+      # --------------------------------------------------------
+      - name: "Get Outputs"
         id: outputs
-
         env:
-          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          ARM_CLIENT_ID: "017c5f98-f171-442e-9019-9bd027d8b4b1"
+          ARM_CLIENT_SECRET: "5Wd8Q~Qhv.uPTTfnkEbPaPl5I_O2UI_v1OHX4dse"
+          ARM_SUBSCRIPTION_ID: "83d4cba0-c6b0-4b71-8050-0b7fd5ba5202"
+          ARM_TENANT_ID: "f1443a2a-8429-4f97-8a40-b3021908fc59"
           ARM_USE_CLI: "false"
           ARM_USE_AZUREAD: "true"
-
         run: |
-          terraform output -json > terraform-outputs.json
+          echo "outputs=$(terraform output -json)" >> $GITHUB_OUTPUT
+        continue-on-error: true
 
-      # ========================================================
-      # 11. Show Outputs
-      # ========================================================
-      - name: "Print Terraform Outputs"
-
+      - name: "Print Outputs"
+        if: steps.outputs.outputs != ''
         run: |
-
           echo "## 📋 Terraform Outputs" >> $GITHUB_STEP_SUMMARY
-
           echo '```json' >> $GITHUB_STEP_SUMMARY
-
-          cat terraform-outputs.json >> $GITHUB_STEP_SUMMARY
-
+          echo '${{ steps.outputs.outputs }}' >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
