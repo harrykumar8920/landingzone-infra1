@@ -26,3 +26,12 @@ resource "azurerm_resource_group" "rg2" {
     managed_by  = "terraform"
   }
 }
+ resource "azurerm_resource_group" "rg4" {
+  name     = "np-preprod-rg4"
+  location = "Central India"
+
+  tags = {
+    environment = "preprod"
+    managed_by  = "terraform"
+  }
+}
