@@ -1,16 +1,16 @@
 terraform {
-    required_version = ">= 1.9.0"
+  required_version = ">= 1.9.0"
 
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-        version = "4.81.0"
+      version = "4.81.0"
     }
   }
   backend "azurerm" {
-    resource_group_name = "b18g35-hk-rg"
+    resource_group_name  = "b18g35-common-rg"
     storage_account_name = "b18g35storageaccount2"
-    container_name = "tfstatefiles"
+    container_name       = "tfstatefiles"
     key                  = "landingzone-hk.tfstate"
   }
 }

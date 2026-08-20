@@ -16,8 +16,8 @@ resource "azurerm_resource_group" "rg2" {
     managed_by  = "terraform"
   }
 }
- 
- resource "azurerm_resource_group" "rg3" {
+
+resource "azurerm_resource_group" "rg3" {
   name     = "np-preprod-rg3"
   location = "Central India"
 
@@ -26,7 +26,7 @@ resource "azurerm_resource_group" "rg2" {
     managed_by  = "terraform"
   }
 }
- resource "azurerm_resource_group" "rg4" {
+resource "azurerm_resource_group" "rg4" {
   name     = "np-preprod-rg4"
   location = "Central India"
 
@@ -34,4 +34,16 @@ resource "azurerm_resource_group" "rg2" {
     environment = "preprod"
     managed_by  = "terraform"
   }
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = "locked-resource-group"
+  location = "West Europe"
+}
+
+resource "azurerm_management_lock" "resource-group-level" {
+  name       = "resource-group-level"
+  scope      = azurerm_resource_group.example.id
+  lock_level = "ReadOnly"
+  notes      = "This Resource Group is Read-Only"
 }
