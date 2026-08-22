@@ -7,15 +7,7 @@ resource "azurerm_resource_group" "rg" {
     managed_by  = "terraform"
   }
 }
-resource "azurerm_resource_group" "rg2" {
-  name     = "np-preprod-rg2"
-  location = "Central India"
 
-  tags = {
-    environment = "preprod"
-    managed_by  = "terraform"
-  }
-}
 
 resource "azurerm_resource_group" "rg3" {
   name     = "np-preprod-rg3"
