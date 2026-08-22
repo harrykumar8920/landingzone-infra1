@@ -38,10 +38,10 @@ resource "azurerm_resource_group" "rg6" {
   location = "West Europe"
 }
 
-resource "azurerm_management_lock" "resource-group-level" {
-  name       = "resource-group-hk"
-  scope      = azurerm_resource_group.rg6.id
-  lock_level = "ReadOnly"
-  notes      = "This Resource Group is Read-Only"
-}
+#resource "azurerm_management_lock" "resource-group-level" {
+ # name       = "resource-group-hk"
+ # scope      = azurerm_resource_group.rg6.id
+ # lock_level = "ReadOnly"
+ # notes      = "This Resource Group is Read-Only"
+#}
 
